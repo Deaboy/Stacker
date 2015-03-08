@@ -6,5 +6,5 @@ A quick game project thrown together and completed in a single evening using Lua
 2. Download this repository as a zip file
 3. Use Love2D to open the zip file you downloaded (I just dragged and dropped the zip file onto a shortcut to Love)
 
-If you're having issues running it, try unzipping the file, then opening the unzipped folder with Love. *Make sure
-the file `main.lua` is in the root of the folder you're trying to open, not inside a subfolder!*
+If you're having issues running it, try unzipping the file, then opening the unzipped folder with Love. Make sure
+the folder you're opening contains the project's source code. You should see `main.lua` and other files immediately within the folder!
