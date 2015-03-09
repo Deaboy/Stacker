@@ -93,14 +93,13 @@ end
 
 function love.keypressed(key, isrepeat)
   
-  if key == " " and running then
+  if key == " " and isrepeat == false and running and atimer == 0 then
     -- put blocks onto board
     for i = pos,(pos+blocks-1) do
       if i >= 1 and i <= BOARD_WIDTH then
         board[level][i] = 1
       else
         blocks = blocks - 1
-        atimer = ANIMATION_TIME
       end
     end
     
@@ -123,13 +122,17 @@ function love.keypressed(key, isrepeat)
       blocks = 1
     end
     
+    if level == BOARD_HEIGHT then
+      running = false
+    end
+    
     level = level + 1
     pos = math.floor(BOARD_WIDTH / 2)
   end
   
   
   -- Handle reset key
-  if key == "return" then
+  if key == "return" and isrepeat == false then
     -- Initialize board
     for i = 1,BOARD_HEIGHT do
       for j = 1,BOARD_WIDTH do
@@ -143,6 +146,7 @@ function love.keypressed(key, isrepeat)
     pos = math.floor(BOARD_WIDTH / 2) - math.floor(blocks / 2)
     left = true
     running = true
+    atimer = 0
   end
   
   

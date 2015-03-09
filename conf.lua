@@ -2,7 +2,7 @@ require "constants"
 
 function love.conf(t)
   t.version = "0.9.1"
-  t.console = true
+  t.console = false
   
   t.window.title = "STACKER!"
   t.window.width = BLOCK_SIZE * BOARD_WIDTH
