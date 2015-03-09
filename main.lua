@@ -7,6 +7,7 @@ blocks = 3
 pos = math.floor(BOARD_WIDTH / 2) - math.floor(blocks / 2)
 left = true
 timer = 0
+atimer = 0
 board = {}
 
 -- Initialize board
@@ -46,8 +47,30 @@ function love.update(dt)
     love.timer.sleep(1/60 - dt)
   end
   
+  -- Decrement the animation timer
+  if atimer > 0 then
+    atimer = atimer - 1
+    
+    if atimer == 0 then
+      
+      -- Remove temporary (flashing) blocks
+      for i=1,BOARD_HEIGHT do
+        for j=1,BOARD_WIDTH do
+          if board[i][j] == 2 then
+            board[i][j] = 0
+          end
+        end
+      end
+      
+      -- Check game over condition
+      if blocks == 0 then
+        running = false
+      end
+    end
+  end
+  
   -- move blocks over
-  if running then
+  if running and atimer == 0 then
     if timer <= 0 then
       if left then
         pos = pos - 1
@@ -75,6 +98,9 @@ function love.keypressed(key, isrepeat)
     for i = pos,(pos+blocks-1) do
       if i >= 1 and i <= BOARD_WIDTH then
         board[level][i] = 1
+      else
+        blocks = blocks - 1
+        atimer = ANIMATION_TIME
       end
     end
     
@@ -82,8 +108,9 @@ function love.keypressed(key, isrepeat)
     if level > 1 then
       for i = 1,BOARD_WIDTH do
         if board[level][i] == 1 and board[level-1][i] == 0 then
-          board[level][i] = 0
+          board[level][i] = 2
           blocks = blocks - 1
+          atimer = ANIMATION_TIME
         end
       end
     end
@@ -94,11 +121,6 @@ function love.keypressed(key, isrepeat)
     end
     if blocks >= 2 and level >= LIMIT_2 then
       blocks = 1
-    end
-    
-    -- Check game over condition
-    if blocks == 0 or level > BOARD_HEIGHT then
-      running = false
     end
     
     level = level + 1
@@ -139,7 +161,7 @@ function love.draw()
   -- Draw stationary blocks
   for i=1,BOARD_HEIGHT do
     for j=1,BOARD_WIDTH do
-      if board[i][j] == 1 then
+      if board[i][j] == 1 or (board[i][j] == 2 and atimer > 0 and (atimer % (60 / 2)) < (60/4)) then
         love.graphics.rectangle(
           "fill",
           (j-1) * BLOCK_SIZE + BLOCK_PADDING,
@@ -148,11 +170,12 @@ function love.draw()
           BLOCK_SIZE - (2 * BLOCK_PADDING)
         )
       end
+        
     end
   end
   
   -- Draw bouncing blocks
-  if running then
+  if running and atimer == 0 then
     for j=pos,(pos+blocks-1) do
       if j >= 1 and j <= BOARD_WIDTH then
         love.graphics.rectangle(
@@ -165,6 +188,7 @@ function love.draw()
       end
     end
   end
+  
   
   -- Draw minor prize marker
   love.graphics.setColor(unpack(MINOR_PRIZE_COLOR))

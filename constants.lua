@@ -23,4 +23,6 @@ MAJOR_PRIZE_COLOR = {255, 255, 255, 191}
 
 HELP_BACKGROUND_COLOR = {255, 255, 255, 224}
 HELP_TEXT_COLOR = {0, 0, 0}
-HELP_TEXT = "STACKER! by Daniel Andrus\n\n<SPACE> Place blocks\n<ENTER> Reset/start game\n<ESC> Quit game"
+HELP_TEXT = "STACKER!\n\n<SPACE> Place blocks\n<ENTER> Reset/start game\n<ESC> Quit game"
+
+ANIMATION_TIME = 1.5 * 60
